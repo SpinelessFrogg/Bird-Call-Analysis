@@ -11,6 +11,6 @@ def mp3_to_spectrogram(mp3_file):
     plt.figure(figsize=(6, 4))
     librosa.display.specshow(spectrogram_in_dB, sr=sample_rate, x_axis='time', y_axis="mel")
     plt.colorbar(format='%+2.0f dB')
-    plt.title("Mel Spectrogram of Bird Call")
-
+    plt.title("Spectrogram of Bird Call")
+    print(spectrogram_in_dB)
     # plt.show()
