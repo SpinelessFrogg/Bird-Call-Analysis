@@ -11,11 +11,17 @@ def get_bird_calls(bird_name):
     data = response.json()
 
     # creates a list of all audio file urls
-    for rec in data["recordings"]:
-        url = f"https:{rec['file']}" if rec["file"].startswith("//") else rec["file"]
-        recording_list.append(url)
-    return recording_list
+    # for rec in data["recordings"]:
+    #     url = f"https:{rec['file']}" if rec["file"].startswith("//") else rec["file"]
+    #     recording_list.append(url)
+    # return recording_list
 
+    for rec in data.get("recordings", [])[:10]:
+        file = rec.get("file", "")
+        url = f"https:{file}" if file.startswith("//") else file
+        if url:
+            recording_list.append(url)
+    return recording_list
 def get_bird_call_list(bird_list):
     bird_recordings = {}
     # API pull for bird calls
