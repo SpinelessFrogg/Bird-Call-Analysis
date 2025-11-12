@@ -3,11 +3,22 @@ import librosa.display
 import matplotlib.pyplot as plt
 import numpy as np
 import os
-import 
+import requests
+from io import BytesIO
+from pydub import AudioSegment
 
-def mp3_to_spectrogram(mp3_file):
-    # load the mp3 data
-    data, sample_rate = librosa.load(mp3_file)
+def _load_mp3_url(url):
+    response = requests.get(url, timeout=10)
+    response.raise_for_status()
+    audio = AudioSegment.from_file(BytesIO(response.content), format="mp3")
+    samples = np.array(audio.get_array_of_samples(), dtype=np.float32)
+    if audio.channels > 1:
+        samples = samples.reshape((-1, audio.channels)).mean(axis=1)  # mono
+    samples /= np.iinfo(audio.array_type).max  # normalize to [-1,1]
+    return samples, audio.frame_rate
+
+def mp3_to_spectrogram(file):
+    data, sample_rate = _load_mp3_url(file)
 
     # finds the highest volume (bird chirps) and trims based on that at 5 seconds for regularity
     data_trimmed, index = librosa.effects.trim(data, top_db=20)
@@ -20,13 +31,24 @@ def mp3_to_spectrogram(mp3_file):
     # create the spectrogram
     spectrogram = librosa.feature.melspectrogram(y=data_trimmed, sr=sample_rate)
     spectrogram_in_dB = librosa.power_to_db(spectrogram, ref=np.max)
-
+    
     # # display
     # display_spectrogram(spectrogram_in_dB, sample_rate)
 
-    # save the raw data
-    save_dir = 
+    # returns a spectrogram
+    return spectrogram_in_dB
 
+def get_spectrogram_list(file_list):
+    spectrogram_list = []
+    for file in file_list:
+        spectrogram_list.append(mp3_to_spectrogram(file))
+    # returns a list of spectrograms for a type of bird
+    return spectrogram_list
+
+def save_spectrogram_DB(bird_name, spectrograms, save_dir="batch_data"):
+    # save the raw data (WIP)
+    os.makedirs(save_dir, exist_ok=True)
+    np.save(f"{save_dir}/{bird_name}_batch.npy", np.array(spectrograms))
 
 def display_spectrogram(spectrogram_in_dB, sample_rate):
     # displays the spectrogram

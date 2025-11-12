@@ -1,6 +1,6 @@
 # from pydub import AudioSegment
-from get_bird_calls import get_bird_calls, os
-from convert_mp3_to_spectrogram import mp3_to_spectrogram
+import get_bird_calls
+import convert_mp3_to_spectrogram
 
 if __name__ == "__main__":
     # birds to pull from database
@@ -8,12 +8,9 @@ if __name__ == "__main__":
                     "Red-bellied Woodpecker",
                     "White-eyed Vireo"]
     
-    # API pull for bird calls
-    # for bird in native_birds:
-    #     print(get_bird_calls(bird))
+    all_bird_sounds = get_bird_calls.get_bird_call_list(native_birds)
 
-    # test code for showing bird calls 
-    bird_dir = f"Calls/{native_birds[2]}/"
-    mp3_to_spectrogram(f"{bird_dir}{os.listdir(bird_dir)[3]}")
-    
-        
+    for bird in all_bird_sounds:
+        list_of_sounds = all_bird_sounds[bird]
+        species_spectrograms = convert_mp3_to_spectrogram.get_spectrogram_list(list_of_sounds)
+        convert_mp3_to_spectrogram.save_spectrogram_DB(bird, species_spectrograms)
