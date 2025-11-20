@@ -15,26 +15,27 @@ def detect_patterns(filters, block_no, sample_size, shrink):
         filters *= 2
     return pattern_layers
 
-input_shape = (128, 128, 1)
-num_classes = len(native_birds)
+def create_model(spec_train, spec_test):
+    input_shape = spec_train.shape[1:]
+    num_classes = spec_test.shape[1]
 
-model = keras.Sequential([
-    layers.Input(shape=input_shape),
+    model = keras.Sequential([
+        layers.Input(shape=input_shape),
 
-    detect_patterns(16, 3, 3, 2),
+        detect_patterns(16, 3, 3, 2),
 
-    # turn 2D data into 1D data for the computer; combine patterns to look at; ignore some nodes to prevent latching onto noise; give the final verdict
-    layers.Flatten(),
-    layers.Dense(128, activation='relu'),
-    layers.Dropout(0.4),
-    layers.Dense(num_classes, activation='softmax')
-])
+        # turn 2D data into 1D data for the computer; combine patterns to look at; ignore some nodes to prevent latching onto noise; give the final verdict
+        layers.Flatten(),
+        layers.Dense(128, activation='relu'),
+        layers.Dropout(0.4),
+        layers.Dense(num_classes, activation='softmax')
+    ])
 
-# model info
-model.compile(
-    optimizer='adam',
-    loss='sparse_categorical_crossentropy',
-    metrics=['accuracy']
-)
+    # model info
+    model.compile(
+        optimizer='adam',
+        loss='sparse_categorical_crossentropy',
+        metrics=['accuracy']
+    )
 
-model.summary()
+    return model

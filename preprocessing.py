@@ -21,6 +21,7 @@ def load_data():
 
     batch_spectrogram_list = np.array(batch_spectrogram_list)
     species_names = np.array(species_names)
+    return batch_spectrogram_list, species_names
 
 def preprocess(batch_file, species_names):
     max_height = max(spectrogram.shape[0] for spectrogram in batch_file)
@@ -36,5 +37,6 @@ def preprocess(batch_file, species_names):
     species_encoded = encoder.fit_transform(species_names)
     species_onehot = to_categorical(species_encoded)
 
-    batch_file_train, batch_file_test, species_train, species_test = train_test_split(batch_file, species_onehot, test_size=0.2, random_state=42)
-    return batch_file_train, batch_file_test, species_train, species_test
+    spec_train, spec_test, labels_train, labels_test = train_test_split(batch_file, species_onehot, test_size=0.2, random_state=42)
+    return spec_train, spec_test, labels_train, labels_test, encoder
+    #      x_train,          x_test,          y_train,       y_test

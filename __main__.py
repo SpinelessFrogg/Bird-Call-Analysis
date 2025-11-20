@@ -1,6 +1,10 @@
 # from pydub import AudioSegment
 import get_bird_calls
 import convert_mp3_to_spectrogram
+from preprocessing import load_data, preprocess
+from build_model import create_model
+import train_model
+
 
 if __name__ == "__main__":
 #     birds to pull from database
@@ -20,3 +24,14 @@ if __name__ == "__main__":
         # convert_mp3_to_spectrogram.display_spectrogram_batch(species_spectrograms)
 
         convert_mp3_to_spectrogram.save_spectrogram_DB(bird, species_spectrograms)
+
+    spec_batch, labels = load_data("batch_data")
+
+    spec_train, spec_test, labels_train, labels_test, encoder = preprocess(spec_batch, labels)
+
+    model = create_model(spec_train, labels_train)
+
+    train_model(model, spec_train, spec_test, labels_train, labels_test)
+
+
+    
