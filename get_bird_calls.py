@@ -16,7 +16,7 @@ def get_bird_calls(bird_name):
     #     recording_list.append(url)
     # return recording_list
 
-    for rec in data.get("recordings", [])[:10]:
+    for rec in data.get("recordings", []):
         file = rec.get("file", "")
         url = f"https:{file}" if file.startswith("//") else file
         if url:

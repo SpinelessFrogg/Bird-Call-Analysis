@@ -8,7 +8,18 @@ import os
 
 if __name__ == "__main__":
 #     birds to pull from database
-    native_birds = ["Scissor-tailed Flycatcher",
+    native_birds = ["American Wigeon",
+                    "American Yellow Warbler",
+                    "Baltimore Oriole",
+                    "Bell's Vireo",
+                    "Black-capped Vireo",
+                    "Blue-grey Gnatcatcher",
+                    "Blue-winged Teal",
+                    "Burrowing Owl",
+                    "Carolina Chickadee",
+                    "Carolina Wren",
+                    "Chuck-will's-widow",
+                    "Common Grackle",
                     "Red-bellied Woodpecker",
                     "White-eyed Vireo"]
     # for testing
@@ -23,7 +34,7 @@ if __name__ == "__main__":
     if not birds_to_process:
         print("All bird batches already exist. Skipping batch creation.")
     else:
-        all_bird_sounds = get_bird_calls.get_bird_call_list(native_birds)
+        all_bird_sounds = get_bird_calls.get_bird_call_list(birds_to_process)
 
         for bird in all_bird_sounds:
             list_of_sounds = all_bird_sounds[bird]

@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import os
 import requests
+from requests.exceptions import ReadTimeout
 from io import BytesIO
 from pydub import AudioSegment, exceptions
 from concurrent.futures import ThreadPoolExecutor
@@ -14,8 +15,12 @@ import math
 
 def _load_mp3_url(url, target_sample_rate=22050):
     headers = {"User-Agent": "Mozilla/5.0 (compatible; BirdSoundBot/1.0)"}
-    response = requests.get(url, headers=headers, timeout=10)
-    response.raise_for_status()
+    try:
+        response = requests.get(url, headers=headers, timeout=10)
+        response.raise_for_status()
+    except ReadTimeout:
+        print(f"ReadTimeout occurred for {url}. Skipping this file.")
+        return None, None
     # complicated audio processing stuff
 
     if 'audio' not in response.headers.get('Content-Type', ''):
