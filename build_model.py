@@ -7,10 +7,17 @@ def detect_patterns(filters, block_no, sample_size, shrink):
     pattern_layers = []
     # checks for patterns in specific sample size (e.g. 3x3) in levels of filters (16, 32, 64) to detect simple and complex patterns
     for block in range(block_no):
-        pattern_layers.extend([
-            layers.Conv2D(filters, (sample_size, sample_size), activation='relu', padding='same'),
-            layers.MaxPooling2D((shrink, shrink))
-        ])
+        if block + 1 != block_no:
+            pattern_layers.extend([
+                layers.Conv2D(filters, (sample_size, sample_size), activation='relu', padding='same'),
+                layers.BatchNormalization(),
+                layers.MaxPooling2D((shrink, shrink))
+            ])
+        else:
+            pattern_layers.extend([
+                layers.Conv2D(filters, (sample_size, sample_size), activation='relu', padding='same'),
+                layers.BatchNormalization()
+            ])
         filters *= 2
     return pattern_layers
 
@@ -21,12 +28,12 @@ def create_model(spec_train, spec_test):
     model = keras.Sequential([
         layers.Input(shape=input_shape),
 
-        *detect_patterns(16, 3, 3, 2),
+        *detect_patterns(64, 3, 3, 2),
 
         # turn 2D data into 1D data for the computer; combine patterns to look at; ignore some nodes to prevent latching onto noise; give the final verdict
         layers.Flatten(),
-        layers.Dense(128, activation='relu'),
-        layers.Dropout(0.4),
+        layers.Dense(512, activation='relu'),
+        layers.Dropout(0.5),
         layers.Dense(num_classes, activation='softmax')
     ])
 

@@ -1,5 +1,4 @@
 import requests
-from concurrent.futures import ThreadPoolExecutor
 
 # pulls bird calls from xeno canto API
 def get_bird_calls(bird_name):
