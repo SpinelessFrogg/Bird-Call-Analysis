@@ -28,11 +28,11 @@ def create_model(spec_train, spec_test):
     model = keras.Sequential([
         layers.Input(shape=input_shape),
 
-        *detect_patterns(64, 3, 3, 2),
+        *detect_patterns(64, 4, 3, 2),
 
         # turn 2D data into 1D data for the computer; combine patterns to look at; ignore some nodes to prevent latching onto noise; give the final verdict
         layers.Flatten(),
-        layers.Dense(512, activation='relu'),
+        layers.Dense(256, activation='relu'),
         layers.Dropout(0.5),
         layers.Dense(num_classes, activation='softmax')
     ])
