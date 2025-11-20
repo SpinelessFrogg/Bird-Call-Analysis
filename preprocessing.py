@@ -29,7 +29,7 @@ def preprocess(batch_file, species_names):
 
     batch_file = np.array([np.pad(spectrogram, ((0, max_height - spectrogram.shape[0]), (0, max_width - spectrogram.shape[1]))) for spectrogram in batch_file])
 
-    batch_file = (batch_file - batch_file.min() / (batch_file.max() - batch_file.min()))
+    batch_file = ((batch_file - batch_file.min()) / (batch_file.max() - batch_file.min()))
 
     batch_file = np.expand_dims(batch_file, axis=-1)
 

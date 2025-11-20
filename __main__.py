@@ -55,7 +55,7 @@ if __name__ == "__main__":
     # unique, counts = np.unique(labels_train.argmax(axis=1), return_counts=True)
     # print(dict(zip(unique, counts)))
 
-    # train_model.train_model(model, spec_train, spec_test, labels_train, labels_test)
+    train_model.train_model(model, spec_train, spec_test, labels_train, labels_test)
 
     # train_model.evaluate_model(spec_test, labels_test)
 

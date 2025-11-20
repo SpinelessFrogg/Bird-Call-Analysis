@@ -5,7 +5,7 @@ def get_bird_calls(bird_name):
     recording_list = []
     
     # api call
-    url = f'https://xeno-canto.org/api/3/recordings?query=en:"={bird_name}"&key=ecebbcf8ef68a7e2bad17baf8e336ab6cc4c8d1d'
+    url = f'https://xeno-canto.org/api/3/recordings?query=en:"={bird_name}"&per_page=500&key=ecebbcf8ef68a7e2bad17baf8e336ab6cc4c8d1d'
     response = requests.get(url)
     data = response.json()
 

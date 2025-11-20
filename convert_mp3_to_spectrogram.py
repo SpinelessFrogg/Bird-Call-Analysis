@@ -9,7 +9,7 @@ import requests
 from requests.exceptions import ReadTimeout
 from io import BytesIO
 from pydub import AudioSegment, exceptions
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
 import math
 
 

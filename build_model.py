@@ -1,5 +1,5 @@
 from tensorflow import keras
-from keras import layers
+from keras import layers, optimizers
 
 
 # Neural network to detect patterns in the spectrogram visually
@@ -39,7 +39,7 @@ def create_model(spec_train, spec_test):
 
     # model info
     model.compile(
-        optimizer='adam',
+        optimizer=optimizers.Adam,
         loss='categorical_crossentropy',
         metrics=['accuracy']
     )
