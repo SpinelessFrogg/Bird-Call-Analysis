@@ -1,6 +1,6 @@
-from preprocessing import load_data, preprocess
-from build_model import create_model
-import os
+from keras.models import load_model
+
+
 
 def train_model(model, spec_train, spec_test, labels_train, labels_test):
 
@@ -14,6 +14,7 @@ def train_model(model, spec_train, spec_test, labels_train, labels_test):
 
     model.save("birdcall_classify_model.keras")
 
-# def evaluate_model(model, spec_test, labels_test):
-#     test_loss, test_acc = model.evaluate(spec_test, labels_test)
-#     print(f"Test accuracy: {test_acc:.2f}\nTest loss: {test_loss:.2f}")
+def evaluate_model(spec_test, labels_test):
+    model = load_model("birdcall_classify_model.keras")
+    test_loss, test_accuracy = model.evaluate(spec_test, labels_test)
+    print(f"Test accuracy: {test_accuracy:.3f}")

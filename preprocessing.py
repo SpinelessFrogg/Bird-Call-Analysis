@@ -17,7 +17,7 @@ def load_data():
 
             for spectro in spectrograms:
                 batch_spectrogram_list.append(spectro)
-                species_names.append[species]
+                species_names.append(species)
 
     batch_spectrogram_list = np.array(batch_spectrogram_list)
     species_names = np.array(species_names)
@@ -39,4 +39,3 @@ def preprocess(batch_file, species_names):
 
     spec_train, spec_test, labels_train, labels_test = train_test_split(batch_file, species_onehot, test_size=0.2, random_state=42)
     return spec_train, spec_test, labels_train, labels_test, encoder
-    #      x_train,          x_test,          y_train,       y_test

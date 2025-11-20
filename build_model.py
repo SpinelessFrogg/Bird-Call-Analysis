@@ -1,6 +1,5 @@
 from tensorflow import keras
 from keras import layers
-from __main__ import native_birds
 
 
 # Neural network to detect patterns in the spectrogram visually
@@ -22,7 +21,7 @@ def create_model(spec_train, spec_test):
     model = keras.Sequential([
         layers.Input(shape=input_shape),
 
-        detect_patterns(16, 3, 3, 2),
+        *detect_patterns(16, 3, 3, 2),
 
         # turn 2D data into 1D data for the computer; combine patterns to look at; ignore some nodes to prevent latching onto noise; give the final verdict
         layers.Flatten(),
@@ -34,7 +33,7 @@ def create_model(spec_train, spec_test):
     # model info
     model.compile(
         optimizer='adam',
-        loss='sparse_categorical_crossentropy',
+        loss='categorical_crossentropy',
         metrics=['accuracy']
     )
 
