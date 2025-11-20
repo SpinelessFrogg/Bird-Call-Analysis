@@ -10,8 +10,7 @@ from io import BytesIO
 from pydub import AudioSegment, exceptions
 from concurrent.futures import ThreadPoolExecutor
 import math
-import glob
-import inspect
+
 
 def _load_mp3_url(url, target_sample_rate=22050):
     headers = {"User-Agent": "Mozilla/5.0 (compatible; BirdSoundBot/1.0)"}
@@ -87,13 +86,13 @@ def save_spectrogram_DB(bird_name, spectrograms, save_dir="batch_data"):
     os.makedirs(save_dir, exist_ok=True)
     np.save(f"{save_dir}/{bird_name}_batch.npy", np.array(spectrograms))
 
-    # def display_spectrogram(spectrogram_in_dB, sample_rate):
-    # # displays the spectrogram
-    # # plt.figure(figsize=(6, 4))
-    # # librosa.display.specshow(spectrogram_in_dB, sr=sample_rate, x_axis='time', y_axis="mel")
-    # # plt.colorbar(format='%+2.0f dB')
-    # # plt.title("Spectrogram of Bird Call")
-    # # plt.show()
+def display_spectrogram(spectrogram_in_dB, sample_rate):
+    # displays the spectrogram
+    plt.figure(figsize=(6, 4))
+    librosa.display.specshow(spectrogram_in_dB, sr=sample_rate, x_axis='time', y_axis="mel")
+    plt.colorbar(format='%+2.0f dB')
+    plt.title("Spectrogram of Bird Call")
+    plt.show()
 
 # for testing
 def display_spectrogram_batch(spectrograms, sample_rate=22050, max_show=10, cols=5):

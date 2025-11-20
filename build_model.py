@@ -1,8 +1,5 @@
-import tensorflow as tf
 from tensorflow import keras
-from keras import layers, models
-import numpy as np
-import os
+from keras import layers
 from __main__ import native_birds
 
 
