@@ -1,6 +1,9 @@
 # batch files
 batch_data/
 
+# model
+birdcall_classify_model.keras
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[codz]
