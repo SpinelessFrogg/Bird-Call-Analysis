@@ -78,7 +78,7 @@ def mp3_to_spectrogram(file):
 def get_spectrogram_list(file_list):
     # uses parallel processing to create the spectrograms
     results = []
-    with ThreadPoolExecutor(max_workers=8) as executor:
+    with ProcessPoolExecutor(max_workers=4) as executor:
         for spec in executor.map(mp3_to_spectrogram, file_list):
             if spec is not None:
                 results.append(spec)
