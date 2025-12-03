@@ -101,6 +101,7 @@ def save_spectrogram_DB(bird_name, spectrograms, save_dir="batch_data"):
     # save the raw data
     os.makedirs(save_dir, exist_ok=True)
     np.save(f"{save_dir}/{bird_name}_batch.npy", np.array(spectrograms))
+    print(f'{bird_name} completed')
 
 def display_spectrogram(spectrogram_in_dB, sample_rate):
     # displays the spectrogram

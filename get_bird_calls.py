@@ -26,6 +26,5 @@ def get_bird_call_list(bird_list):
     # API pull for bird calls
     for bird in bird_list:
         bird_recordings[bird] = get_bird_calls(bird)
-        print(f'{bird} completed')
     # returns list of lists
     return bird_recordings
