@@ -68,6 +68,17 @@ def mp3_to_spectrogram(file):
     # create the spectrogram
     spectrogram = librosa.feature.melspectrogram(y=call_region, sr=sample_rate)
     spectrogram_in_dB = librosa.power_to_db(spectrogram, ref=np.max)
+
+    if spectrogram_in_dB is None:
+        return None
+    spectrogram_in_dB = np.array(spectrogram_in_dB, dtype=np.float32)
+    # must be 2D
+    if spectrogram_in_dB.ndim != 2:
+        return None
+    # must have positive range
+    if np.isnan(spectrogram_in_dB).any():
+        return None
+    return spectrogram_in_dB
     
     # # display
     # display_spectrogram(spectrogram_in_dB, sample_rate)

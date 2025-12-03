@@ -20,12 +20,12 @@ def get_bird_calls(bird_name):
         url = f"https:{file}" if file.startswith("//") else file
         if url:
             recording_list.append(url)
-    print(f'{bird_name} completed')
     return recording_list
 def get_bird_call_list(bird_list):
     bird_recordings = {}
     # API pull for bird calls
     for bird in bird_list:
         bird_recordings[bird] = get_bird_calls(bird)
+        print(f'{bird} completed')
     # returns list of lists
     return bird_recordings

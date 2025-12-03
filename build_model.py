@@ -3,24 +3,25 @@ from keras import layers, optimizers
 
 
 # Neural network to detect patterns in the spectrogram visually
-def detect_patterns(filters, block_no, sample_size, shrink):
+def detect_patterns(filters, block_no):
     pattern_layers = []
-    # checks for patterns in specific sample size (e.g. 3x3) in levels of filters (16, 32, 64) to detect simple and complex patterns
+    
     for block in range(block_no):
-        if block + 1 != block_no:
-            pattern_layers.extend([
-                layers.Conv2D(filters, (sample_size, sample_size), activation='relu', padding='same'),
-                layers.BatchNormalization(),
-                layers.MaxPooling2D((shrink, shrink))
-            ])
-        else:
-            pattern_layers.extend([
-                layers.Conv2D(filters, (sample_size, sample_size), activation='relu', padding='same'),
-                layers.BatchNormalization()
-            ])
+        pool = (block < block_no - 1)
+        pattern_layers.extend(conv_block(filters, pool))
         filters *= 2
     return pattern_layers
 
+def conv_block(filters, pool=True):
+    # checks for patterns in sample size (e.g. 3x3) in levels of filters (16, 32, 64) to detect simple and complex patterns
+    block = [
+        layers.Conv2D(filters, (3, 3), activation='relu', padding='same'),
+        layers.BatchNormalization(),
+    ]
+    if pool:
+        block.append(layers.MaxPooling2D((2, 2)))
+    return block
+    
 def create_model(spec_train, spec_test):
     input_shape = spec_train.shape[1:]
     num_classes = spec_test.shape[1]
@@ -28,10 +29,9 @@ def create_model(spec_train, spec_test):
     model = keras.Sequential([
         layers.Input(shape=input_shape),
 
-        *detect_patterns(32, 3, 3, 2),
+        *detect_patterns(32, 3),
 
-        # turn 2D data into 1D data for the computer; combine patterns to look at; ignore some nodes to prevent latching onto noise; give the final verdict
-        layers.Flatten(),
+        layers.GlobalAveragePooling2D(),
         layers.Dense(256, activation='relu'),
         layers.Dropout(0.5),
         layers.Dense(num_classes, activation='softmax')
@@ -39,7 +39,7 @@ def create_model(spec_train, spec_test):
 
     # model info
     model.compile(
-        optimizer=optimizers.Adam,
+        optimizer="adam",
         loss='categorical_crossentropy',
         metrics=['accuracy']
     )
