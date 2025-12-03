@@ -2,7 +2,7 @@
 batch_data/
 
 # model
-birdcall_classify_model.keras
+*.keras
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
