@@ -1,8 +1,6 @@
-import get_bird_calls
-import convert_mp3_to_spectrogram
-import preprocessing
-from build_model import create_model
-import train_model
+from data import download
+from preprocessing import spectrogram, preprocessing
+from training import model, train
 import os
 
 
@@ -34,28 +32,28 @@ if __name__ == "__main__":
     if not birds_to_process:
         print("All bird batches already exist. Skipping batch creation.")
     else:
-        all_bird_sounds = get_bird_calls.get_bird_call_list(birds_to_process)
+        all_bird_sounds = download.XenoCantoClient.get_bird_call_list(birds_to_process)
 
         for bird in all_bird_sounds:
             list_of_sounds = all_bird_sounds[bird]
-            species_spectrograms = convert_mp3_to_spectrogram.get_spectrogram_list(list_of_sounds)
+            species_spectrograms = spectrogram.get_spectrogram_list(list_of_sounds)
 
             # for testing
             # convert_mp3_to_spectrogram.display_spectrogram_batch(species_spectrograms)
 
-            convert_mp3_to_spectrogram.save_spectrogram_DB(bird, species_spectrograms)
+            spectrogram.save_spectrogram_DB(bird, species_spectrograms)
 
     spec_batch, labels = preprocessing.load_data()
 
     spec_train, spec_test, labels_train, labels_test, encoder = preprocessing.preprocess(spec_batch, labels)
 
-    model = create_model(spec_train, labels_train)
+    model = model.create_model(spec_train, labels_train)
 
     # import numpy as np
     # unique, counts = np.unique(labels_train.argmax(axis=1), return_counts=True)
     # print(dict(zip(unique, counts)))
 
-    train_model.train_model(model, spec_train, spec_test, labels_train, labels_test)
+    train.train_model(model, spec_train, spec_test, labels_train, labels_test)
 
     # train_model.evaluate_model(spec_test, labels_test)
 

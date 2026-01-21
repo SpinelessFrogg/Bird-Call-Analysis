@@ -1,4 +1,3 @@
-# hoo boy this is getting complicated
 import librosa
 import librosa.display
 from librosa import resample
@@ -11,7 +10,6 @@ from io import BytesIO
 from pydub import AudioSegment, exceptions
 from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
 import math
-
 
 def _load_mp3_url(url, target_sample_rate=22050):
     headers = {"User-Agent": "Mozilla/5.0 (compatible; BirdSoundBot/1.0)"}
@@ -82,9 +80,6 @@ def mp3_to_spectrogram(file):
     
     # # display
     # display_spectrogram(spectrogram_in_dB, sample_rate)
-
-    # returns a spectrogram
-    return spectrogram_in_dB
 
 def get_spectrogram_list(file_list):
     # uses parallel processing to create the spectrograms
