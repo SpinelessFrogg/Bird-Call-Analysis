@@ -23,8 +23,9 @@ class DatasetBuilder:
     def split(self, X, y, test_size=0.2):
         return train_test_split(
             X, y,
-            test_size,
-            stratify=y
+            test_size=test_size,
+            stratify=y,
+            random_state=42
         )
 
     def _pad_to_median_width(self, batch):
@@ -48,7 +49,7 @@ class DatasetBuilder:
     def _normalize(self, batch):
         # Normalize each spectrogram
         batch = np.array([
-            (spec - spec.min()) / (spec.max() - spec.min() + 1e-9) if spec.max() != spec.min() else spec
+            (spec - spec.min()) / (spec.max() - spec.min() + 1e-9) if spec.max() != spec.min() else np.zeros_like(spec)
             for spec in batch
         ], dtype=np.float32)
         return batch
