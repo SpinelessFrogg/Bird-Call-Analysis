@@ -2,7 +2,10 @@ from data import download, load_data
 from preprocessing import dataset_builder, pipeline
 from training import model, train
 import os
+from dotenv import load_dotenv
 
+load_dotenv()
+api_key = os.getenv("API_KEY")
 
 if __name__ == "__main__":
 #     birds to pull from database
@@ -32,6 +35,7 @@ if __name__ == "__main__":
     if not birds_to_process:
         print("All bird batches already exist. Skipping batch creation.")
     else:
+        getter = download.XenoCantoClient(api_key=api_key)
         all_bird_sounds = download.XenoCantoClient.get_bird_call_list(bird_list=birds_to_process)
 
         for bird in all_bird_sounds:
