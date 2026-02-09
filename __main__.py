@@ -36,7 +36,7 @@ if __name__ == "__main__":
         print("All bird batches already exist. Skipping batch creation.")
     else:
         getter = download.XenoCantoClient(api_key=api_key)
-        all_bird_sounds = download.XenoCantoClient.get_bird_call_list(bird_list=birds_to_process)
+        all_bird_sounds = getter.get_bird_call_list(bird_list=birds_to_process)
 
         for bird in all_bird_sounds:
             list_of_sounds = all_bird_sounds[bird]
