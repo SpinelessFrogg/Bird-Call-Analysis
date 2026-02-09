@@ -51,4 +51,5 @@ class DatasetBuilder:
             (spec - spec.min()) / (spec.max() - spec.min() + 1e-9) if spec.max() != spec.min() else spec
             for spec in batch
         ], dtype=np.float32)
+        return batch
         
