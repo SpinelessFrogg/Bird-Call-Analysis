@@ -1,4 +1,4 @@
-from data import download
+from data import download, load_data
 from preprocessing import dataset_builder, spectrogram
 from training import model, train
 import os
@@ -43,9 +43,12 @@ if __name__ == "__main__":
 
             spectrogram.save_spectrogram_DB(bird, species_spectrograms)
 
-    spec_batch, labels = dataset_builder.load_data()
+    specs, labels = load_data.load_spectrogram_batches()
 
-    spec_train, spec_test, labels_train, labels_test, encoder = dataset_builder.preprocess(spec_batch, labels)
+    builder = dataset_builder.DatasetBuilder(specs, labels)
+
+    X, y = builder.prepare()
+    spec_train, spec_test, labels_train, labels_test = builder.split(X, y)
 
     model = model.create_model(spec_train.shape[1:], spec_test.shape[1])
 

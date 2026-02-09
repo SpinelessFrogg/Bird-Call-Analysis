@@ -47,8 +47,8 @@ class DatasetBuilder:
 
     def _normalize(self, batch):
         # Normalize each spectrogram
-        batch_file = np.array([
-            (spec - spec.min()) / (spec.max() - spec.min() + 1e-9)
-            for spec in batch_file
+        batch = np.array([
+            (spec - spec.min()) / (spec.max() - spec.min() + 1e-9) if spec.max() != spec.min() else spec
+            for spec in batch
         ], dtype=np.float32)
         
