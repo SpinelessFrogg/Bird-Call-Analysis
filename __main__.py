@@ -1,5 +1,5 @@
 from data import download, load_data
-from preprocessing import dataset_builder, spectrogram
+from preprocessing import dataset_builder, pipeline
 from training import model, train
 import os
 
@@ -32,16 +32,16 @@ if __name__ == "__main__":
     if not birds_to_process:
         print("All bird batches already exist. Skipping batch creation.")
     else:
-        all_bird_sounds = download.XenoCantoClient.get_bird_call_list(birds_to_process)
+        all_bird_sounds = download.XenoCantoClient.get_bird_call_list(bird_list=birds_to_process)
 
         for bird in all_bird_sounds:
             list_of_sounds = all_bird_sounds[bird]
-            species_spectrograms = spectrogram.get_spectrogram_list(list_of_sounds)
+            species_spectrograms = pipeline.get_spectrogram_list(list_of_sounds)
 
             # for testing
             # convert_mp3_to_spectrogram.display_spectrogram_batch(species_spectrograms)
 
-            spectrogram.save_spectrogram_DB(bird, species_spectrograms)
+            pipeline.save_spectrogram_DB(bird, species_spectrograms)
 
     specs, labels = load_data.load_spectrogram_batches()
 
