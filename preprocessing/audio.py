@@ -4,7 +4,7 @@ from io import BytesIO
 from librosa import resample
 import numpy as np
 
-def _load_mp3_url(url):
+def load_mp3_url(url):
     # pulls mp3 data or returns none if erroring
     headers = {"User-Agent": "Mozilla/5.0 (compatible; BirdCallMLBot/1.0)"}
     try:
@@ -12,14 +12,14 @@ def _load_mp3_url(url):
         response.raise_for_status()
     except requests.exceptions.ReadTimeout:
         print(f"ReadTimeout occurred for {url}. Skipping this file.")
-        return None, None
+        return None
 
     if 'audio' not in response.headers.get('Content-Type', ''):
-        return None, None
+        return None
     try:
         audio = AudioSegment.from_file(BytesIO(response.content), format="mp3")
     except exceptions.CouldntDecodeError:
-        return None, None
+        return None
     return audio
 
 def decode_audiosegment(audio, target_sample_rate=22050):
