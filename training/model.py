@@ -22,10 +22,7 @@ def conv_block(filters, pool=True):
         block.append(layers.MaxPooling2D((2, 2)))
     return block
     
-def create_model(spec_train, spec_test):
-    input_shape = spec_train.shape[1:]
-    num_classes = spec_test.shape[1]
-
+def create_model(input_shape, num_classes):
     model = keras.Sequential([
         layers.Input(shape=input_shape),
 

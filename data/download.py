@@ -2,7 +2,7 @@ import requests
 
 class XenoCantoClient:
     def __init__(self, api_key):
-        api_key = """INSERT API KEY HERE"""
+        api_key = """#APIKEY"""
 
     def get_recordings(self, bird_name):
         # pulls bird calls from xeno canto API

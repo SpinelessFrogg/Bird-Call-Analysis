@@ -1,5 +1,5 @@
 from data import download
-from preprocessing import spectrogram, preprocessing
+from preprocessing import dataset_builder, spectrogram
 from training import model, train
 import os
 
@@ -43,11 +43,11 @@ if __name__ == "__main__":
 
             spectrogram.save_spectrogram_DB(bird, species_spectrograms)
 
-    spec_batch, labels = preprocessing.load_data()
+    spec_batch, labels = dataset_builder.load_data()
 
-    spec_train, spec_test, labels_train, labels_test, encoder = preprocessing.preprocess(spec_batch, labels)
+    spec_train, spec_test, labels_train, labels_test, encoder = dataset_builder.preprocess(spec_batch, labels)
 
-    model = model.create_model(spec_train, labels_train)
+    model = model.create_model(spec_train.shape[1:], spec_test.shape[1])
 
     # import numpy as np
     # unique, counts = np.unique(labels_train.argmax(axis=1), return_counts=True)

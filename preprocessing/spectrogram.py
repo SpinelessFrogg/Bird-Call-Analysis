@@ -12,7 +12,7 @@ from concurrent.futures import ThreadPoolExecutor, ProcessPoolExecutor
 import math
 
 def _load_mp3_url(url, target_sample_rate=22050):
-    headers = {"User-Agent": "Mozilla/5.0 (compatible; BirdSoundBot/1.0)"}
+    headers = {"User-Agent": "Mozilla/5.0 (compatible; BirdCallMLBot/1.0)"}
     try:
         response = requests.get(url, headers=headers, timeout=10)
         response.raise_for_status()
