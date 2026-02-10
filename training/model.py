@@ -23,7 +23,7 @@ def conv_block(filters, pool=True):
 def create_model(input_shape, num_classes):
     model = keras.Sequential([
         layers.Input(shape=input_shape),
-        *detect_patterns(32, 3),
+        *detect_patterns(32, 4),
         layers.GlobalAveragePooling2D(),
         layers.Dense(256, activation='relu'),
         layers.Dropout(0.5),

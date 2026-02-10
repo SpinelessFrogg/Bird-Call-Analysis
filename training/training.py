@@ -4,10 +4,10 @@ from keras.callbacks import EarlyStopping
 from keras.models import load_model
 from config import MODEL_DIR
 
-def train_model(model, spec_train, labels_train):
+def train_model(model, spec_train, spec_test, labels_train, labels_test):
      model.fit(
         spec_train, labels_train,
-        validation_split=0.1,
+        validation_data=(spec_test, labels_test),
         epochs=50,
         batch_size=16,
         class_weight = weight_classes(labels_train),

@@ -4,16 +4,17 @@ from keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
 
 class DatasetBuilder:
-    def __init__(self, specs, labels):
+    def __init__(self, specs, labels, target_width=216):
         self.encoder = LabelEncoder()
         self.specs = specs
         self.labels = labels
+        self.target_width = target_width
 
     def prepare(self):
         # X = self._pad_to_median_width(self.specs) # I think that padding is causing major issues with the data. 5s cropping already standardized?
-        X = np.array(self.specs, dtype=np.float32)
+        X = np.array([self._fix_width(spec) for spec in self.specs], dtype=np.float32)
         X = self._normalize(X)
-        X += 0.01 * np.random.randn(*X.shape)
+        X += 0.01 * np.random.randn(*X.shape) # this is probably not the best way to introduce confusion
         # Add channel dimension
         X = np.expand_dims(X, axis=-1)
 
@@ -53,4 +54,16 @@ class DatasetBuilder:
         mean = np.mean(batch)
         std = np.std(batch) + 1e-9
         return (batch - mean) / std
+    
+    def _fix_width(self, spec):
+        w = spec.shape[1]
+        if w > self.target_width:
+            return spec[:, :self.target_width]
+        elif w < self.target_width:
+            return np.pad(
+                spec,
+                ((0, 0), (0, self.target_width - w)),
+                mode="constant"
+            )
+        return spec
         

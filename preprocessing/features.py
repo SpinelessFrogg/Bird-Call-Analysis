@@ -21,6 +21,6 @@ def waveform_to_melspec(data, sample_rate):
     call_region = extract_call_region(data_trimmed, sample_rate)
 
     # create the spectrogram
-    spectrogram = librosa.feature.melspectrogram(y=call_region, sr=sample_rate, n_mels=128)
+    spectrogram = librosa.feature.melspectrogram(y=call_region, sr=sample_rate, n_mels=128, n_fft=2048, hop_length=512)
     spectrogram_in_dB = librosa.power_to_db(spectrogram, ref=np.max)
     return spectrogram_in_dB.astype(np.float32)
