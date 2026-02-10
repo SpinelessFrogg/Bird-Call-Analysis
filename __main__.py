@@ -5,6 +5,7 @@ import os
 from dotenv import load_dotenv
 
 load_dotenv()
+
 api_key = os.getenv("API_KEY")
 
 if __name__ == "__main__":
@@ -25,7 +26,7 @@ if __name__ == "__main__":
                     "White-eyed Vireo"]
     # for testing
     # native_birds = ["Scissor-tailed Flycatcher"]
-    batch_dir = "batch_data"
+    batch_dir = "data/batches/"
     birds_to_process = []
     for bird in native_birds:
         batch_file = os.path.join(batch_dir, f"{bird}_batch.npy")
