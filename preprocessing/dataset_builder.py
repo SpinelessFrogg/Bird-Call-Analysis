@@ -10,8 +10,10 @@ class DatasetBuilder:
         self.labels = labels
 
     def prepare(self):
-        X = self._pad_to_median_width(self.specs)
+        # X = self._pad_to_median_width(self.specs) # I think that padding is causing major issues with the data. 5s cropping already standardized?
+        X = np.array(self.specs, dtype=np.float32)
         X = self._normalize(X)
+        X += 0.01 * np.random.randn(*X.shape)
         # Add channel dimension
         X = np.expand_dims(X, axis=-1)
 
