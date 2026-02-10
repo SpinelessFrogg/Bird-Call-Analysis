@@ -1,5 +1,5 @@
 import requests
-from scripts.download_batches import NATIVE_BIRDS, BATCH_DIR
+from config import NATIVE_BIRDS, BATCH_DIR
 import os
 
 class XenoCantoClient:
