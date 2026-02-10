@@ -1,7 +1,6 @@
 import librosa
 import numpy as np
 
-
 def extract_call_region(data, sample_rate, window_seconds=5.0, hop_seconds=0.5):
     # Find the 5s segment with max RMS energy.
     target_len = int(window_seconds * sample_rate)
@@ -25,9 +24,3 @@ def waveform_to_melspec(data, sample_rate):
     spectrogram = librosa.feature.melspectrogram(y=call_region, sr=sample_rate, n_mels=128)
     spectrogram_in_dB = librosa.power_to_db(spectrogram, ref=np.max)
     return spectrogram_in_dB.astype(np.float32)
-
-
-    
-    # # display
-    # display_spectrogram(spectrogram_in_dB, sample_rate)
-

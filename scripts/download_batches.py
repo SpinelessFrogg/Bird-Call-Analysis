@@ -2,8 +2,6 @@ from config import api_key
 from data import download
 from preprocessing.pipeline import get_spectrogram_list, save_spectrogram_DB
 
-
-
 def main():
     getter = download.XenoCantoClient(api_key=api_key)
     recordings = getter.get_bird_call_list(bird_list=getter.check_downloaded())
@@ -14,4 +12,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    

@@ -17,7 +17,6 @@ class DatasetBuilder:
 
         species_encoded = self.encoder.fit_transform(self.labels)
         y = to_categorical(species_encoded)
-
         return X, y
 
     def split(self, X, y, test_size=0.2):
@@ -39,15 +38,12 @@ class DatasetBuilder:
         padded = []
         for spec in batch:
             h, w = spec.shape
-
             # Trim or pad width
             if w > target_w:
                 spec = spec[:, :target_w]
             else:
                 spec = np.pad(spec, ((0, 0), (0, target_w - w)), mode="constant")
-
             padded.append(spec)
-
         return np.array(padded, dtype=np.float32)
 
     def _normalize(self, batch):

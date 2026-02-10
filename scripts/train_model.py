@@ -14,7 +14,7 @@ def main():
 
     model = create_model(spec_train.shape[1:], spec_test.shape[1])
 
-    train_model(model, spec_train, spec_test, labels_train, labels_test)
+    train_model(model, spec_train, labels_train)
 
     model.save(MODEL_DIR / "bird_model.keras")
 
