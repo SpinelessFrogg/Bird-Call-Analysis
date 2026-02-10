@@ -3,7 +3,7 @@ import numpy as np
 from keras.callbacks import EarlyStopping
 
 def train_model(model, spec_train, labels_train):
-    model.fit(
+     model.fit(
         spec_train, labels_train,
         validation_split=0.1,
         epochs=20,
