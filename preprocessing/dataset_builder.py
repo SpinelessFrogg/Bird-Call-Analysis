@@ -28,7 +28,7 @@ class DatasetBuilder:
         )
 
     def _pad_to_median_width(self, batch):
-        if not batch:
+        if batch.size == 0:
             raise ValueError("Batch is empty")
         widths = [spec.shape[1] for spec in batch]
         if not widths:  # Check if widths is empty
