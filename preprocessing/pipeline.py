@@ -24,7 +24,7 @@ def get_spectrogram_list(file_list):
 
     return [r for r in results if r is not None]
 
-def save_spectrogram_DB(bird_name, spectrograms, save_dir="batch_data"):
+def save_spectrogram_DB(bird_name, spectrograms, save_dir="data/batches"):
     if not spectrograms:  # nothing to save
         return
     # save the raw data
