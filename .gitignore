@@ -2,7 +2,7 @@
 batch_data/
 
 # model
-*.keras
+# *.keras
 
 # env variables
 *.env

@@ -24,7 +24,7 @@ def main():
     # plt.colorbar()
     # plt.show()
 
-    train_model(model, spec_train, labels_train)
+    train_model(model, spec_train, spec_test, labels_train, labels_test)
 
     model.save(f"{MODEL_DIR}bird_model.keras")
 
