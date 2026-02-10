@@ -1,11 +1,9 @@
 from tensorflow import keras
-from keras import layers, optimizers
-
+from keras import layers
 
 # Neural network to detect patterns in the spectrogram visually
 def detect_patterns(filters, block_no):
     pattern_layers = []
-    
     for block in range(block_no):
         pool = (block < block_no - 1)
         pattern_layers.extend(conv_block(filters, pool))
@@ -38,5 +36,4 @@ def create_model(input_shape, num_classes):
         loss='categorical_crossentropy',
         metrics=['accuracy']
     )
-
     return model

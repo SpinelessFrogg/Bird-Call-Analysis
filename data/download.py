@@ -26,12 +26,6 @@ class XenoCantoClient:
         response = requests.get(url)
         data = response.json()
 
-        # creates a list of all audio file urls
-        # for rec in data["recordings"]:
-        #     url = f"https:{rec['file']}" if rec["file"].startswith("//") else rec["file"]
-        #     recording_list.append(url)
-        # return recording_list
-
         for rec in data.get("recordings", []):
             file = rec.get("file", "")
             url = f"https:{file}" if file.startswith("//") else file
