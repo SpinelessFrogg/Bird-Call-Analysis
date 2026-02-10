@@ -11,7 +11,7 @@ def train_model(model, spec_train, labels_train):
         epochs=50,
         batch_size=16,
         class_weight = weight_classes(labels_train),
-        callbacks=EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
+        callbacks=EarlyStopping(monitor='val_accuracy', patience=8, restore_best_weights=True)
     )
 
 def weight_classes(labels_train):
@@ -23,7 +23,7 @@ def weight_classes(labels_train):
     class_weights = dict(enumerate(class_weights))
     return class_weights
 
-def evaluate_model(spec_test, labels_test, model):
+def evaluate_model(spec_test, labels_test):
     model = load_model(f"{MODEL_DIR}bird_model.keras")
     test_loss, test_accuracy = model.evaluate(spec_test, labels_test)
     print(f"Test accuracy: {test_accuracy:.3f}")
