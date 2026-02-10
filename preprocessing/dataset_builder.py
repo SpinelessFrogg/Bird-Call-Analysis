@@ -50,9 +50,7 @@ class DatasetBuilder:
 
     def _normalize(self, batch):
         # Normalize each spectrogram
-        batch = np.array([
-            (spec - spec.min()) / (spec.max() - spec.min() + 1e-9) if spec.max() != spec.min() else np.zeros_like(spec)
-            for spec in batch
-        ], dtype=np.float32)
-        return batch
+        mean = np.mean(batch)
+        std = np.std(batch) + 1e-9
+        return (batch - mean) / std
         
