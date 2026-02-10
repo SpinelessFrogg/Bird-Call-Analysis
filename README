@@ -1,0 +1,88 @@
+Bird Call Analysis
+
+Train a CNN to classify bird species from short audio clips. This project downloads bird call audio, converts each clip into a Mel spectrogram, builds a dataset, and trains a model using TensorFlow/Keras. Built mainly to practice writing a clean, modular ML pipeline instead of doing everything in a notebook.
+
+What it does:
+
+Pipeline:
+
+Download MP3 from URL
+
+Decode + resample audio
+
+Extract the loudest 5-second region
+
+Convert to Mel spectrogram
+
+Normalize + pad to fixed width
+
+Train CNN classifier
+
+Repo layout
+preprocessing/
+    audio.py            # download + decode audio
+    features.py         # waveform → spectrogram
+    pipeline.py         # url → spectrogram orchestration
+    dataset_builder.py  # padding, normalization, label encoding, splits
+    visualize.py
+
+training/
+    training.py
+    model.py
+
+data/
+    download.py # pulls urls to mp3 from xeno canto api
+    load_data.py # loads the batch .npy files
+    batches/ # saved .npy spectrogram batches
+
+Usage:
+
+Build spectrogram dataset - 
+
+python build_dataset.py
+
+Saves .npy spectrogram batches per species.
+
+Train - 
+
+python train_model.py
+
+Evaluate - 
+
+python evaluate_model.py
+
+Model - 
+Simple CNN trained on Mel spectrograms.
+Input shape:
+
+(mel_bins, time_steps, 1)
+
+Uses:
+
+cross entropy loss
+
+class weights for imbalance
+
+early stopping
+
+Current results
+
+~14 species
+~65–72% validation accuracy
+
+Not tuned heavily yet — mainly focused on building a clean pipeline.
+
+Why this project exists - 
+I wanted practice with:
+- audio preprocessing
+- feature engineering
+- organizing ML code outside notebooks
+- multiprocessing
+- training + evaluation scripts
+
+TODO
+- data augmentation (SpecAugment)
+- better model architecture
+- FastAPI inference endpoint
+- Docker
+- more data
