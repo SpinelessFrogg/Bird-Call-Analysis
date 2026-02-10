@@ -8,7 +8,6 @@ from training.training import train_model
 from config import MODEL_DIR
 
 def main():
-    
     specs, labels = load_spectrogram_batches()
 
     builder = DatasetBuilder(specs, labels)
@@ -16,7 +15,7 @@ def main():
     X, y = builder.prepare()
     spec_train, spec_test, labels_train, labels_test = builder.split(X, y)
     model = create_model(spec_train.shape[1:], labels_train.shape[1])
-
+ 
     # ### CHECKING DATA ###
     # import numpy as np
     # import matplotlib.pyplot as plt
@@ -27,7 +26,7 @@ def main():
 
     train_model(model, spec_train, labels_train)
 
-    model.save(MODEL_DIR / "bird_model.keras")
+    model.save(f"{MODEL_DIR}bird_model.keras")
 
 if __name__ == "__main__":
 
