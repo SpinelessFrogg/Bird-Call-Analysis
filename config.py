@@ -22,3 +22,5 @@ NATIVE_BIRDS = ["American Wigeon",
                 "White-eyed Vireo"]
 
 BATCH_DIR = "data/batches/"
+
+MODEL_DIR = "models/"
