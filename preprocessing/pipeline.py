@@ -25,4 +25,4 @@ def save_spectrogram_DB(bird_name, spectrograms, save_dir="data/batches"):
     # save the raw data
     os.makedirs(save_dir, exist_ok=True)
     np.save(f"{save_dir}/{bird_name}_batch.npy", np.array(spectrograms))
-    print(f'{bird_name} completed')
+    print(f'{bird_name} batch file created.')

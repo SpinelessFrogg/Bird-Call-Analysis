@@ -6,14 +6,14 @@ class XenoCantoClient:
     def __init__(self, api_key):
         self.api_key = api_key
 
-    def check_downloaded():
+    def check_downloaded(self):
         birds_to_process = []
         for bird in NATIVE_BIRDS:
             batch_file = os.path.join(BATCH_DIR, f"{bird}_batch.npy")
             if not os.path.exists(batch_file):
                 birds_to_process.append(bird)
         if not birds_to_process:
-            print("All bird batches already exist. Skipping batch creation.")
+            return None
         else:
             return birds_to_process
     
@@ -31,6 +31,7 @@ class XenoCantoClient:
             url = f"https:{file}" if file.startswith("//") else file
             if url:
                 recording_list.append(url)
+        print(f"{bird_name} urls fetched.")
         return recording_list
     
     def get_bird_call_list(self, bird_list):
