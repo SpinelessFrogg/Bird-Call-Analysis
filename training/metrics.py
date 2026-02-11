@@ -4,15 +4,18 @@ from sklearn.metrics import confusion_matrix, classification_report
 import numpy as np
 
 class PerformanceMetrics:
-    def __init__(self, model_name, spec_test, labels_test):
+    def __init__(self, model_name, spec_test, labels_test, builder):
         self.model = load_model(f"{MODEL_DIR}{model_name}")
         self.spec_test = spec_test
         self.labels_test = labels_test
+        self.builder = builder
 
     def evaluate_model(self):
         self._loss_accuracy()
         self._conf_matrix()
         self._classif_report()
+        for i, name in enumerate(self.builder.encoder.classes_):
+            print(i, name)
 
     def _loss_accuracy(self):
         test_loss, test_accuracy = self.model.evaluate(self.spec_test, self.labels_test)
