@@ -11,8 +11,8 @@ def main():
     X, y = builder.prepare()
     spec_train, spec_test, labels_train, labels_test = builder.split(X, y)
     model_performance = PerformanceMetrics(
-        "2-10-26_fixedwidth_extra_conv.keras", 
-        spec_test=spec_test, labels_test=labels_test)
+        model_name="2-10-26_fixedwidth_extra_conv.keras", 
+        spec_test=spec_test, labels_test=labels_test, builder=builder)
     model_performance.evaluate_model()
 
 if __name__ == "__main__":
