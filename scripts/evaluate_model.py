@@ -1,7 +1,6 @@
 import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-from training.model import create_model
 from training.metrics import PerformanceMetrics
 from data.load_data import load_spectrogram_batches
 from preprocessing.dataset_builder import DatasetBuilder
