@@ -13,7 +13,7 @@ def main():
 
     builder = DatasetBuilder(specs, labels)
 
-    X, y = builder.prepare()
+    X, y = builder.prepare(augment=True)
     spec_train, spec_test, labels_train, labels_test = builder.split(X, y)
     model = create_model(spec_train.shape[1:], labels_train.shape[1])
  
