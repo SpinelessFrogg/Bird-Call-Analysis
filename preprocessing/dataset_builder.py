@@ -11,7 +11,6 @@ class DatasetBuilder:
         self.target_width = target_width
 
     def prepare(self):
-        # X = self._pad_to_median_width(self.specs) # I think that padding is causing major issues with the data. 5s cropping already standardized?
         X = np.array([self._fix_width(spec) for spec in self.specs], dtype=np.float32)
         X = self._normalize(X)
         X += 0.01 * np.random.randn(*X.shape) # this is probably not the best way to introduce confusion
@@ -29,7 +28,7 @@ class DatasetBuilder:
             stratify=y,
             random_state=42
         )
-
+    
     def _normalize(self, batch):
         # Normalize each spectrogram
         mean = np.mean(batch)
