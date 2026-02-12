@@ -6,6 +6,7 @@ from preprocessing.dataset_builder import DatasetBuilder
 from training.model import create_model
 from training.training import train_model
 from config import MODEL_DIR
+import numpy as np
 
 def main():
     specs, labels = load_spectrogram_batches()
@@ -25,7 +26,7 @@ def main():
     # plt.show()
 
     train_model(model, spec_train, spec_test, labels_train, labels_test)
-
+    np.save(f"{MODEL_DIR}class_names.npy", builder.encoder.classes_)
     model.save(f"{MODEL_DIR}bird_model.keras")
 
 if __name__ == "__main__":

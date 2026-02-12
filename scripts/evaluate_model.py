@@ -14,6 +14,8 @@ def main():
         "2-10-26_fixedwidth_extra_conv.keras", 
         spec_test=spec_test, labels_test=labels_test)
     model_performance.evaluate_model()
-
+    import numpy as np
+    from config import MODEL_DIR
+    np.save(f"{MODEL_DIR}class_names.npy", builder.encoder.classes_)
 if __name__ == "__main__":
     main()
