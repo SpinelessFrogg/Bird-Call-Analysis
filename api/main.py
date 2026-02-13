@@ -14,6 +14,7 @@ model_name = "2-10-26_fixedwidth_extra_conv.keras"
 model = load_model(f"{MODEL_DIR}{model_name}")
 
 CLASS_NAMES = np.load(f"{MODEL_DIR}class_names.npy")
+CLASS_NAMES = [name.replace("_batch", "") for name in CLASS_NAMES]
 
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
