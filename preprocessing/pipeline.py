@@ -19,20 +19,20 @@ def get_spectrogram_list(file_list):
         results = list(executor.map(url_to_spectrogram, file_list))
     return [r for r in results if r is not None]
 
-def normalize(self, batch):
+def normalize(batch):
     # Normalize each spectrogram
     mean = np.mean(batch)
     std = np.std(batch) + 1e-9
     return (batch - mean) / std
 
-def fix_width(self, spec):
+def fix_width(spec, target_width=216):
     w = spec.shape[1]
-    if w > self.target_width:
-        return spec[:, :self.target_width]
-    elif w < self.target_width:
+    if w > target_width:
+        return spec[:, :target_width]
+    elif w < target_width:
         return np.pad(
             spec,
-            ((0, 0), (0, self.target_width - w)),
+            ((0, 0), (0, target_width - w)),
             mode="constant"
         )
     return spec
