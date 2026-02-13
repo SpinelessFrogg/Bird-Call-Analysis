@@ -3,7 +3,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from data.load_data import load_spectrogram_batches
 from preprocessing.dataset_builder import DatasetBuilder
-from preprocessing.pipeline import prepare_batch, add_noise
+
 from training.model import create_model
 from training.training import train_model
 from config import MODEL_DIR
@@ -11,8 +11,7 @@ import numpy as np
 
 def main():
     specs, labels = load_spectrogram_batches()
-    specs = prepare_batch(specs)
-    #specs = add_noise(specs) # not robust enough yet
+
     builder = DatasetBuilder(specs, labels)
 
     X, y = builder.prepare(augment=True)
