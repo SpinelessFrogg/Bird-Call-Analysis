@@ -16,6 +16,8 @@ def main():
 
     X, y = builder.prepare(augment=True)
     X_train, X_test, y_train, y_test = builder.split(X, y)
+    np.save(f"{MODEL_DIR}X_test.npy", X_test)
+    np.save(f"{MODEL_DIR}y_test.npy", y_test)
     model = create_model(X_train.shape[1:], y_train.shape[1])
  
     # ### CHECKING DATA ###
@@ -31,5 +33,4 @@ def main():
     model.save(f"{MODEL_DIR}bird_model.keras")
 
 if __name__ == "__main__":
-
     main()
