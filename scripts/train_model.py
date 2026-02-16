@@ -27,7 +27,7 @@ def main():
     # plt.show()
 
     train_model(model, spec_train, spec_test, labels_train, labels_test)
-    np.save(f"{MODEL_DIR}class_names.npy", builder.encoder.classes_)
+    np.save(f"{MODEL_DIR}class_names.npy", [cls.replace('_batch', '') for cls in builder.encoder.classes_])
     model.save(f"{MODEL_DIR}bird_model.keras")
 
 if __name__ == "__main__":
