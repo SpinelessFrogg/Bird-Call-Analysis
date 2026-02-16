@@ -19,6 +19,40 @@ def get_spectrogram_list(file_list):
         results = list(executor.map(url_to_spectrogram, file_list))
     return [r for r in results if r is not None]
 
+def normalize(batch):
+    # Normalize each spectrogram
+    mean = np.mean(batch)
+    std = np.std(batch) + 1e-9
+    return (batch - mean) / std
+
+def fix_width(spec, target_width=216):
+    w = spec.shape[1]
+    if w > target_width:
+        return spec[:, :target_width]
+    elif w < target_width:
+        return np.pad(
+            spec,
+            ((0, 0), (0, target_width - w)),
+            mode="constant"
+        )
+    return spec
+
+def prepare_batch(specs):
+    X = np.array([fix_width(spec) for spec in specs], dtype=np.float32)
+    X = normalize(X)
+    X = np.expand_dims(X, axis=-1)
+    return X
+
+def prepare_single(spec):
+    spec = fix_width(spec)
+    spec = normalize(spec)
+    spec = np.expand_dims(spec, axis=-1)  # channel
+    spec = np.expand_dims(spec, axis=0)   # batch
+    return spec
+
+def add_noise(X, scale=0.01):
+    return X + scale * np.random.randn(*X.shape)
+
 def save_spectrogram_DB(bird_name, spectrograms, save_dir="data/batches"):
     if not spectrograms:  # nothing to save
         return

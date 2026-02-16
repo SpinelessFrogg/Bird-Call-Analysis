@@ -8,7 +8,7 @@ from preprocessing.dataset_builder import DatasetBuilder
 def main():
     specs, labels = load_spectrogram_batches()
     builder = DatasetBuilder(specs, labels)
-    X, y = builder.prepare()
+    X, y = builder.prepare(augment=False)
     spec_train, spec_test, labels_train, labels_test = builder.split(X, y)
     model_performance = PerformanceMetrics(
         model_name="2-10-26_fixedwidth_extra_conv.keras", 
