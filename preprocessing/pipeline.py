@@ -10,6 +10,9 @@ def url_to_spectrogram(url):
     if audio is None:
         return None
     samples, sr = decode_audiosegment(audio)
+    if np.random.random() < 0.5:
+        from preprocessing.audio import augment_waveform
+        samples = augment_waveform(samples, sr)
     spec = waveform_to_melspec(samples, sr)
     if spec is None or spec.ndim != 2 or np.isnan(spec).any():
         return None
@@ -25,7 +28,6 @@ def normalize(batch, mean=None, std=None, save_stats=False):
     if mean is None or std is None:
         mean = np.mean(batch)
         std = np.std(batch) + 1e-9
-
         if save_stats:
             np.save(f"{MODEL_DIR}norm_mean.npy", mean)
             np.save(f"{MODEL_DIR}norm_std.npy", std)
@@ -59,9 +61,6 @@ def prepare_single(spec):
     spec = np.expand_dims(spec, axis=-1)  # channel
     spec = np.expand_dims(spec, axis=0)   # batch
     return spec
-
-def add_noise(X, scale=0.01):
-    return X + scale * np.random.randn(*X.shape)
 
 def save_spectrogram_DB(bird_name, spectrograms, save_dir="data/batches"):
     if not spectrograms:  # nothing to save
