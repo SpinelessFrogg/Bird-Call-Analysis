@@ -8,10 +8,10 @@ import matplotlib.pyplot as plt
 import seaborn
 
 class PerformanceMetrics:
-    def __init__(self, model_name, spec_test, labels_test, builder):
+    def __init__(self, model_name, X_test, y_test, builder):
         self.model = load_model(f"{MODEL_DIR}{model_name}")
-        self.spec_test = spec_test
-        self.labels_test = labels_test
+        self.X_test = X_test
+        self.y_test = y_test
         self.builder = builder
         self.class_names = np.load(f"{MODEL_DIR}class_names.npy")
 
@@ -26,14 +26,14 @@ class PerformanceMetrics:
         self._conf_heatmap(cm=self._conf_matrix())
 
     def _loss_accuracy(self):
-        test_loss, test_accuracy = self.model.evaluate(self.spec_test, self.labels_test)
+        test_loss, test_accuracy = self.model.evaluate(self.X_test, self.y_test)
         return test_accuracy, test_loss
 
     def _conf_matrix(self):
-        labels_pred = self.model.predict(self.spec_test)
-        labels_pred = np.argmax(labels_pred, axis=1)
-        labels_true = np.argmax(self.labels_test, axis=1)
-        cm = confusion_matrix(labels_true, labels_pred)
+        y_pred = self.model.predict(self.X_test)
+        y_pred = np.argmax(y_pred, axis=1)
+        y_true = np.argmax(self.y_test, axis=1)
+        cm = confusion_matrix(y_true, y_pred)
         return cm
 
     def _conf_heatmap(self, cm):
@@ -55,10 +55,10 @@ class PerformanceMetrics:
         plt.show()
 
     def _classif_report(self):
-        labels_pred = self.model.predict(self.spec_test)
-        labels_pred = np.argmax(labels_pred, axis=1)
-        labels_true = np.argmax(self.labels_test, axis=1)
-        cr = classification_report(labels_true, labels_pred)
+        y_pred = self.model.predict(self.X_test)
+        y_pred = np.argmax(y_pred, axis=1)
+        y_true = np.argmax(self.y_test, axis=1)
+        cr = classification_report(y_true, y_pred)
         return cr
 
         ### Notes for me & class

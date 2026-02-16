@@ -10,13 +10,13 @@ from config import MODEL_DIR
 import numpy as np
 
 def main():
-    specs, labels = load_spectrogram_batches()
+    X, y = load_spectrogram_batches()
 
-    builder = DatasetBuilder(specs, labels)
+    builder = DatasetBuilder(X, y)
 
     X, y = builder.prepare(augment=True)
-    spec_train, spec_test, labels_train, labels_test = builder.split(X, y)
-    model = create_model(spec_train.shape[1:], labels_train.shape[1])
+    X_train, X_test, y_train, y_test = builder.split(X, y)
+    model = create_model(X_train.shape[1:], y_train.shape[1])
  
     # ### CHECKING DATA ###
     # import numpy as np
@@ -26,7 +26,7 @@ def main():
     # plt.colorbar()
     # plt.show()
 
-    train_model(model, spec_train, spec_test, labels_train, labels_test)
+    train_model(model, X_train, X_test, y_train, y_test)
     np.save(f"{MODEL_DIR}class_names.npy", [cls.replace('_batch', '') for cls in builder.encoder.classes_])
     model.save(f"{MODEL_DIR}bird_model.keras")
 

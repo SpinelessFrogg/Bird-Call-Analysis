@@ -4,17 +4,17 @@ from sklearn.model_selection import train_test_split
 from preprocessing.pipeline import prepare_batch, add_noise
 import numpy as np
 class DatasetBuilder:
-    def __init__(self, specs, labels, target_width=216):
+    def __init__(self, X, y, target_width=216):
         self.encoder = LabelEncoder()
-        self.specs = specs
-        self.labels = labels
+        self.X = X
+        self.y = y
         self.target_width = target_width
 
     def prepare(self, augment=False):
-        X = prepare_batch(self.specs, save_stats=True)
+        X = prepare_batch(self.X, save_stats=True)
         if augment:
             X = add_noise(X)
-        species_encoded = self.encoder.fit_transform(self.labels)
+        species_encoded = self.encoder.fit_transform(self.y)
         y = to_categorical(species_encoded)
         return X, y
 

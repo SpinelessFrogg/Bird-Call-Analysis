@@ -43,8 +43,8 @@ def fix_width(spec, target_width=216):
         )
     return spec
 
-def prepare_batch(specs, save_stats=False):
-    X = np.array([fix_width(spec) for spec in specs], dtype=np.float32)
+def prepare_batch(X, save_stats=False):
+    X = np.array([fix_width(spec) for spec in X], dtype=np.float32)
     X = normalize(X, save_stats=save_stats)
     X = np.expand_dims(X, axis=-1)
     return X
