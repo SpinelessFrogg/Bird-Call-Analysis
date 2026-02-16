@@ -13,7 +13,7 @@ class DatasetBuilder:
     def prepare(self, augment=False):
         X = prepare_batch(self.specs)
         if augment:
-            X = add_noise()
+            X = add_noise(X)
         species_encoded = self.encoder.fit_transform(self.labels)
         y = to_categorical(species_encoded)
         return X, y
