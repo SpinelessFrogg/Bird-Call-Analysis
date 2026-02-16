@@ -35,3 +35,8 @@ class PerformanceMetrics:
         labels_true = np.argmax(self.labels_test, axis=1)
         cr = classification_report(labels_true, labels_pred)
         print(f"Classification Report:\n{cr}")
+
+        ### Notes for me & class
+        # Accuracy is good generally but not good for the big picture, see class 0 & 6, underrepresented and underperforming
+        # Recall = how good at guessing positives, number of correct positives / number of actual positives (per class)
+        # Precision = how many "yes" guesses were right, correct positives / all guessed positives (per class).
