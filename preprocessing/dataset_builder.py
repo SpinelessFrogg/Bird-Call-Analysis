@@ -1,7 +1,7 @@
 from sklearn.preprocessing import LabelEncoder
 from keras.utils import to_categorical
 from sklearn.model_selection import train_test_split
-from preprocessing.pipeline import prepare_batch, add_noise
+from preprocessing.pipeline import prepare_batch
 import numpy as np
 class DatasetBuilder:
     def __init__(self, X, y, target_width=216):
@@ -10,10 +10,8 @@ class DatasetBuilder:
         self.y = y
         self.target_width = target_width
 
-    def prepare(self, augment=False):
+    def prepare(self):
         X = prepare_batch(self.X, save_stats=True)
-        if augment:
-            X = add_noise(X)
         species_encoded = self.encoder.fit_transform(self.y)
         y = to_categorical(species_encoded)
         return X, y

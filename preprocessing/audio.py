@@ -3,6 +3,7 @@ from pydub import AudioSegment, exceptions
 from io import BytesIO
 from librosa import resample
 import numpy as np
+import random
 
 def load_mp3_url(url):
     # pulls mp3 data or returns none if erroring
@@ -33,3 +34,17 @@ def decode_audiosegment(audio, target_sample_rate=22050):
         samples = resample(samples, orig_sr=audio.frame_rate, target_sr=target_sample_rate)
         return samples, target_sample_rate
     return samples, audio.frame_rate
+
+def augment_waveform(samples, sr):
+    if random.random() < 0.5:
+        noise = np.random.randn(len(samples))
+        samples = samples + 0.003 * noise
+
+    if random.random() < 0.5:
+        shift = int(0.1 * sr)
+        samples = np.roll(samples, shift)
+
+    if random.random() < 0.5:
+        samples = samples * random.uniform(0.8, 1.2)
+
+    return samples

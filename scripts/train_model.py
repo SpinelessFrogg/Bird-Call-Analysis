@@ -14,7 +14,7 @@ def main():
 
     builder = DatasetBuilder(X, y)
 
-    X, y = builder.prepare(augment=True)
+    X, y = builder.prepare()
     X_train, X_test, y_train, y_test = builder.split(X, y)
     np.save(f"{MODEL_DIR}X_test.npy", X_test)
     np.save(f"{MODEL_DIR}y_test.npy", y_test)
