@@ -11,7 +11,7 @@ class DatasetBuilder:
         self.target_width = target_width
 
     def prepare(self, augment=False):
-        X = prepare_batch(self.specs)
+        X = prepare_batch(self.specs, save_stats=True)
         if augment:
             X = add_noise(X)
         species_encoded = self.encoder.fit_transform(self.labels)
@@ -25,5 +25,3 @@ class DatasetBuilder:
             stratify=y,
             random_state=42
         )
-    
-        

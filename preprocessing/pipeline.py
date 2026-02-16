@@ -3,6 +3,7 @@ from concurrent.futures import ProcessPoolExecutor
 from preprocessing.audio import load_mp3_url, decode_audiosegment
 from preprocessing.features import waveform_to_melspec
 import os
+from config import MODEL_DIR
 
 def url_to_spectrogram(url):
     audio = load_mp3_url(url)
@@ -19,10 +20,15 @@ def get_spectrogram_list(file_list):
         results = list(executor.map(url_to_spectrogram, file_list))
     return [r for r in results if r is not None]
 
-def normalize(batch):
+def normalize(batch, mean=None, std=None, save_stats=False):
     # Normalize each spectrogram
-    mean = np.mean(batch)
-    std = np.std(batch) + 1e-9
+    if mean is None or std is None:
+        mean = np.mean(batch)
+        std = np.std(batch) + 1e-9
+
+        if save_stats:
+            np.save(f"{MODEL_DIR}norm_mean.npy", mean)
+            np.save(f"{MODEL_DIR}norm_std.npy", std)
     return (batch - mean) / std
 
 def fix_width(spec, target_width=216):
@@ -37,15 +43,19 @@ def fix_width(spec, target_width=216):
         )
     return spec
 
-def prepare_batch(specs):
+def prepare_batch(specs, save_stats=False):
     X = np.array([fix_width(spec) for spec in specs], dtype=np.float32)
-    X = normalize(X)
+    X = normalize(X, save_stats=save_stats)
     X = np.expand_dims(X, axis=-1)
     return X
 
 def prepare_single(spec):
     spec = fix_width(spec)
-    spec = normalize(spec)
+    
+    mean = np.load(f"{MODEL_DIR}norm_mean.npy")
+    std = np.load(f"{MODEL_DIR}norm_std.npy")
+
+    spec = normalize(spec, mean, std)
     spec = np.expand_dims(spec, axis=-1)  # channel
     spec = np.expand_dims(spec, axis=0)   # batch
     return spec
