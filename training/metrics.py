@@ -16,13 +16,13 @@ class PerformanceMetrics:
         self.class_names = np.load(f"{MODEL_DIR}class_names.npy")
 
     def evaluate_model(self):
-        # loss_acc = self._loss_accuracy()
-        # print(f"Test accuracy: {loss_acc[0]}")
-        # print(f"Test loss: {loss_acc[1]}")
-        # print(f"Confusion Matrix:\n{self._conf_matrix()}")
-        # print(f"Classification Report:\n{self._classif_report()}")
-        # for i, name in enumerate(self.class_names):
-        #     print(i, name)
+        loss_acc = self._loss_accuracy()
+        print(f"Test accuracy: {loss_acc[0]}")
+        print(f"Test loss: {loss_acc[1]}")
+        print(f"Confusion Matrix:\n{self._conf_matrix()}")
+        print(f"Classification Report:\n{self._classif_report()}")
+        for i, name in enumerate(self.class_names):
+            print(i, name)
         self._conf_heatmap(cm=self._conf_matrix(), normalize_axis="column")
 
     def _loss_accuracy(self):

@@ -11,7 +11,7 @@ def main():
     X, y = builder.prepare()
     X_train, X_test, y_train, y_test = builder.split(X, y)
     model_performance = PerformanceMetrics(
-        model_name="2-10-26_fixedwidth_extra_conv.keras", 
+        model_name="2-20-26_waveform_aug.keras", 
         X_test=X_test, y_test=y_test, builder=builder)
     model_performance.evaluate_model()
 
