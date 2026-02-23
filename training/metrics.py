@@ -23,7 +23,7 @@ class PerformanceMetrics:
         print(f"Classification Report:\n{self._classif_report()}")
         for i, name in enumerate(self.class_names):
             print(i, name)
-        self._conf_heatmap(cm=self._conf_matrix(), normalize_axis="column")
+        self._conf_heatmap(cm=self._conf_matrix(), normalize_axis="row")
 
     def _loss_accuracy(self):
         test_loss, test_accuracy = self.model.evaluate(self.X_test, self.y_test)

@@ -35,7 +35,7 @@ def decode_audiosegment(audio, target_sample_rate=22050):
         return samples, target_sample_rate
     return samples, audio.frame_rate
 
-def augment_waveform(samples, sr):
+def augment_waveform(samples, sr, rarity, base_prob=0.4):
     if random.random() < 0.5:
         noise = np.random.randn(len(samples))
         samples = samples + 0.003 * noise
