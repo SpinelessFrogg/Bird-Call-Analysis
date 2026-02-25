@@ -1,17 +1,19 @@
 from dotenv import load_dotenv
 import os
+from pathlib import Path
 
 load_dotenv()
 
-api_key = os.getenv("API_KEY")
+xeno_api_key = os.getenv("X_API_KEY")
+ebird_api_key = os.getenv("E_API_KEY")
 
 #     birds to pull from database
 NATIVE_BIRDS = ["American Wigeon",
-                "American Yellow Warbler",
+                "Northern Yellow Warbler",
                 "Baltimore Oriole",
                 "Bell's Vireo",
                 "Black-capped Vireo",
-                "Blue-grey Gnatcatcher",
+                "Blue-gray Gnatcatcher",
                 "Blue-winged Teal",
                 "Burrowing Owl",
                 "Carolina Chickadee",
@@ -24,3 +26,7 @@ NATIVE_BIRDS = ["American Wigeon",
 BATCH_DIR = "data/batches/"
 
 MODEL_DIR = "models/"
+
+TAXONOMY_FILE = Path("data/taxonomy.json")
+CODE_FILE = Path("data/coded_taxonomy.json")
+MACAULAY_URL = "https://search.macaulaylibrary.org/api/v1/search"
