@@ -10,12 +10,13 @@ from config import MODEL_DIR
 import numpy as np
 
 def main():
-    X, y = load_spectrogram_batches()
+    X_train, y_train = load_spectrogram_batches(split="train")
+    X_test, y_test = load_spectrogram_batches(split="test")
 
-    builder = DatasetBuilder(X, y)
+    builder = DatasetBuilder(X_train, y_train)
 
-    X, y = builder.prepare()
-    X_train, X_test, y_train, y_test = builder.split(X, y)
+    X_train, y_train = builder.prepare()
+    X_test, y_test = builder.prepare()
     np.save(f"{MODEL_DIR}X_test.npy", X_test)
     np.save(f"{MODEL_DIR}y_test.npy", y_test)
     model = create_model(X_train.shape[1:], y_train.shape[1])

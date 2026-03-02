@@ -21,7 +21,14 @@ def url_to_spectrogram(url):
 def get_spectrogram_list(file_list):
     with ProcessPoolExecutor(max_workers=4) as executor:
         results = list(executor.map(url_to_spectrogram, file_list))
-    return [r for r in results if r is not None]
+    spectrograms = []
+    for url, spec in zip(file_list, results):
+        if spec is not None:
+            spectrograms.append({
+                "url": url,
+                "spec": spec
+            })
+    return spectrograms
 
 def normalize(batch, mean=None, std=None, save_stats=False):
     # Normalize each spectrogram
@@ -67,5 +74,5 @@ def save_spectrogram_DB(bird_name, spectrograms, save_dir="data/batches"):
         return
     # save the raw data
     os.makedirs(save_dir, exist_ok=True)
-    np.save(f"{save_dir}/{bird_name}_batch.npy", np.array(spectrograms))
+    np.save(f"{save_dir}/{bird_name}_batch.npy", np.array(spectrograms, dtype=object))
     print(f'{bird_name} batch file created.')
