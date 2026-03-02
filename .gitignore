@@ -1,5 +1,5 @@
 # batch files
-batch_data/
+data/batches/*.npy
 
 # model
 # *.keras

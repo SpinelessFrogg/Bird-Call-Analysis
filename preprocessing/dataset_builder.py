@@ -12,7 +12,10 @@ class DatasetBuilder:
 
     def prepare(self):
         X = prepare_batch(self.X, save_stats=True)
-        species_encoded = self.encoder.fit_transform(self.y)
+        if not hasattr(self.encoder, "classes_"):
+            species_encoded = self.encoder.fit_transform(self.y)
+        else:
+            species_encoded = self.encoder.transform(self.y)
         y = to_categorical(species_encoded)
         return X, y
 
