@@ -84,7 +84,6 @@ class EBirdClient:
     def get_urls(self, code): # This function is heavily modified code from https://github.com/Md-Shaid-Hasan-Niloy/Macaulay_downloader
         # Tried to fork his repo and use it but it was giving me too many issues. Shoutout Md Shaid Hasan Niloy <3
         print(f"Searching for urls...")
-
         url = MACAULAY_URL
         page = 1
         url_list = []
@@ -94,7 +93,7 @@ class EBirdClient:
                             "taxonCode": code,
                             "mediaType": "audio",
                             "sort": "rating_rank_desc",
-                            "pageSize": 1000,
+                            "pageSize": 30,
                             "page": page
                 }
                 response = requests.get(url, params=params, timeout=15)
@@ -108,7 +107,7 @@ class EBirdClient:
                     audio_url = item.get("audioUrl") or item.get("mediaUrl")
                     url_list.append(audio_url)
                 page += 1
-                
+            url_list = list(dict.fromkeys(url_list)) 
             print(f"Found {len(url_list)} total recordings on Macaulay")
             return url_list
             

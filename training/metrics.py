@@ -8,11 +8,11 @@ import matplotlib.pyplot as plt
 import seaborn
 
 class PerformanceMetrics:
-    def __init__(self, model_name, X_test, y_test, builder):
+    def __init__(self, model_name, X_test, y_test):
         self.model = load_model(f"{MODEL_DIR}{model_name}")
         self.X_test = X_test
         self.y_test = y_test
-        self.builder = builder
+
         self.class_names = np.load(f"{MODEL_DIR}class_names.npy")
 
     def evaluate_model(self):

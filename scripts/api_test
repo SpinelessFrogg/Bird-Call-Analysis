@@ -1,0 +1,52 @@
+import sys, os
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from config import MACAULAY_URL
+import requests
+
+def get_urls(code): # This function is heavily modified code from https://github.com/Md-Shaid-Hasan-Niloy/Macaulay_downloader
+        # Tried to fork his repo and use it but it was giving me too many issues. Shoutout Md Shaid Hasan Niloy <3
+        print(f"Searching for urls...")
+        seen = set()
+        url = MACAULAY_URL
+        url_list = []
+        cursor = "*" 
+        try:
+            while True:
+                params = {
+                            "taxonCode": code,
+                            "mediaType": "audio",
+                            "sort": "rating_rank_desc",
+                            "cursorMark": cursor,
+                            "pageSize": 100
+                }
+
+                response = requests.get(MACAULAY_URL, params=params, timeout=15)
+                response.raise_for_status()
+                json_data = response.json()
+                results_block = json_data.get('results', {})
+                results = results_block.get('content', [])
+                if not results:
+                    break
+                
+                new_count = 0
+                for item in results:
+                    audio_url = item.get("audioUrl") or item.get("mediaUrl")
+                    if audio_url and audio_url not in seen:
+                        seen.add(audio_url)
+                        url_list.append(audio_url)
+                        new_count += 1
+
+                next_cursor = results_block.get('nextCursorMark')
+                print(f"Cursor {cursor[:10]}...: {new_count} new URLs ({len(url_list)} total)")
+
+                if not next_cursor or next_cursor == cursor:
+                    break
+                cursor = next_cursor
+            # print(url_list)
+            print(f"Found {len(url_list)} unique recordings on Macaulay")
+            return url_list
+            
+        except Exception as e:
+            print(e)
+
+get_urls("rebwoo")
