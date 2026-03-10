@@ -3,7 +3,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from data.load_data import load_spectrogram_batches
 from preprocessing.dataset_builder import DatasetBuilder
-
+from preprocessing.pipeline import runtime_augment
 from training.model import create_model
 from training.training import train_model
 from config import MODEL_DIR
@@ -23,17 +23,13 @@ def main():
     X_test, y_test = builder.prepare()
     np.save(f"{MODEL_DIR}X_test.npy", X_test)
     np.save(f"{MODEL_DIR}y_test.npy", y_test)
-    model = create_model(X_train.shape[1:], y_train.shape[1])
- 
-    # ### CHECKING DATA ###
-    # import numpy as np
-    # import matplotlib.pyplot as plt
-    # print(np.unique(labels_train.argmax(axis=1), return_counts=True))
-    # plt.imshow(spec_train[0].squeeze())
-    # plt.colorbar()
-    # plt.show()
 
-    train_model(model, X_train, X_test, y_train, y_test)
+    train_data = runtime_augment(X_train, y_train, augment=True)
+    test_data   = runtime_augment(X_test,  y_test,  augment=False)
+
+    model = create_model(X_train.shape[1:], y_train.shape[1])
+
+    train_model(model, train_data, test_data, y_train)
     np.save(f"{MODEL_DIR}class_names.npy", [cls.replace('_batch', '') for cls in builder.encoder.classes_])
     model.save(f"{MODEL_DIR}bird_model.keras")
 

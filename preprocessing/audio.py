@@ -1,7 +1,7 @@
 import requests
 from pydub import AudioSegment, exceptions
 from io import BytesIO
-from librosa import resample
+from librosa import effects, resample
 import numpy as np
 import random
 
@@ -35,16 +35,34 @@ def decode_audiosegment(audio, target_sample_rate=22050):
         return samples, target_sample_rate
     return samples, audio.frame_rate
 
-def augment_waveform(samples, sr, rarity=0, base_prob=0.4):
+def augment_waveform(samples, sr):
+    # Gaussian noise
     if random.random() < 0.5:
         noise = np.random.randn(len(samples))
         samples = samples + 0.003 * noise
-
+    # Background noise injection
     if random.random() < 0.5:
-        shift = int(0.1 * sr)
-        samples = np.roll(samples, shift)
-
+        background = np.random.randn(len(samples))
+        snr_db = random.uniform(10, 30)
+        signal_power = np.mean(samples ** 2)
+        noise_power = signal_power / (10 ** (snr_db / 10))
+        background = background * np.sqrt(noise_power / (np.mean(background ** 2) + 1e-9))
+        samples = samples + background
+    # Pitch shift
+    if random.random() < 0.4:
+        n_steps = random.uniform(-2, 2)
+        samples = effects.pitch_shift(samples, sr=sr, n_steps=n_steps)
+    # Time stretch
+    if random.random() < 0.4:
+        rate = random.uniform(0.85, 1.15)
+        samples = effects.time_stretch(samples, rate=rate)
+        target_len = int(5.0 * sr)
+        if len(samples) > target_len:
+            samples = samples[:target_len]
+        elif len(samples) < target_len:
+            samples = np.pad(samples, (0, target_len - len(samples)))
+    # Volume scaling
     if random.random() < 0.5:
-        samples = samples * random.uniform(0.8, 1.2)
+        samples = samples * random.uniform(0.6, 1.4)
 
     return samples

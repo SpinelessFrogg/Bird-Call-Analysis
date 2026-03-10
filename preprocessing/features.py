@@ -11,7 +11,7 @@ def extract_call_region(data, sample_rate, window_seconds=5.0, hop_seconds=0.5):
     max_energy, best = -1.0, 0
     for start in range(0, len(data) - target_len + 1, hop):
         segment = data[start:start + target_len]
-        energy = float(np.max(librosa.feature.rms(y=segment)))
+        energy = float(np.mean(librosa.feature.rms(y=segment)))
         if energy > max_energy:
             max_energy, best = energy, start
     return data[best:best + target_len]
