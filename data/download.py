@@ -13,7 +13,7 @@ class XenoCantoClient:
     def check_downloaded(self):
         birds_to_process = []
         for bird in NATIVE_BIRDS:
-            batch_file = os.path.join(BATCH_DIR, f"{bird}_batch.npy")
+            batch_file = os.path.join(BATCH_DIR, f"{bird}_train_batch.npy")
             if not os.path.exists(batch_file):
                 birds_to_process.append(bird)
         if not birds_to_process:
@@ -45,6 +45,20 @@ class XenoCantoClient:
             bird_recordings[bird] = self.get_recordings(bird)
         # returns list of lists
         return bird_recordings
+    
+    def get_good_recs(self, bird_name, threshold):
+        # pulls bird calls from xeno canto API
+        recording_list = []
+    
+        # api call
+        url = f'https://xeno-canto.org/api/3/recordings?query=en:"={bird_name}"&per_page=500&key={self.api_key}'
+        response = requests.get(url)
+        data = response.json()
+
+        ls = data.get("recordings", [])
+        if len(ls) < threshold:
+            print(f"{bird_name} {len(ls)}")
+
     
 class EBirdClient:
     def __init__(self, api_key):
