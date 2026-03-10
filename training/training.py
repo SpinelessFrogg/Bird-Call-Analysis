@@ -8,10 +8,10 @@ def train_model(model, train_data, test_data, y_train):
      model.fit(
         train_data,
         validation_data=(test_data),
-        epochs=50,
-        batch_size=16,
+        epochs=100,
+        batch_size=64,
         class_weight = weight_classes(y_train),
-        callbacks=EarlyStopping(monitor='val_loss', patience=6, restore_best_weights=True)
+        callbacks=EarlyStopping(monitor='val_loss', patience=12, restore_best_weights=True)
     )
 
 def weight_classes(y_train):

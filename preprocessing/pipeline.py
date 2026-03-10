@@ -101,7 +101,7 @@ def augment_spec(spec, label):
 
     return spec, label
 
-def runtime_augment(X, y, augment=False, batch_size=16):
+def runtime_augment(X, y, augment=False, batch_size=32):
     ds = tf.data.Dataset.from_tensor_slices((X, y))
     if augment:
         ds = ds.map(augment_spec, num_parallel_calls=tf.data.AUTOTUNE)

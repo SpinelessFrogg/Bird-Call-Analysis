@@ -24,8 +24,8 @@ def main():
     np.save(f"{MODEL_DIR}X_test.npy", X_test)
     np.save(f"{MODEL_DIR}y_test.npy", y_test)
 
-    train_data = runtime_augment(X_train, y_train, augment=True)
-    test_data   = runtime_augment(X_test,  y_test,  augment=False)
+    train_data = runtime_augment(X_train, y_train, augment=True, batch_size=64)
+    test_data = runtime_augment(X_test,  y_test,  augment=False, batch_size=64)
 
     model = create_model(X_train.shape[1:], y_train.shape[1])
 

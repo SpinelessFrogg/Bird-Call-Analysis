@@ -12,7 +12,13 @@ def load_mp3_url(url):
         response = requests.get(url, headers=headers, timeout=10)
         response.raise_for_status()
     except requests.exceptions.ReadTimeout:
-        print(f"ReadTimeout occurred for {url}. Skipping this file.")
+        print(f"ReadTimeout: {url}")
+        return None
+    except requests.exceptions.HTTPError as e:
+        print(f"HTTPError {e.response.status_code}: {url}, skipping.")
+        return None
+    except requests.exceptions.RequestException as e:
+        print(f"Request failed: {url} — {e}")
         return None
 
     if 'audio' not in response.headers.get('Content-Type', ''):
